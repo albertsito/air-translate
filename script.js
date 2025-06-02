@@ -35,17 +35,95 @@ if (!SpeechRecognition) {
 }
 
 async function fetchTranslation(text) {
-  const response = await fetch("https://libretranslate.de/translate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      q: text,
-      source: "es",
-      target: "en",
-      format: "text"
-    })
-  });
+  const dictionary = {
+    "hola": "hello",
+    "buenos": "good",
+    "días": "days",
+    "día": "day",
+    "a": "to",
+    "todos": "everyone",
+    "todas": "all",
+    "buenos días": "good morning",
+    "buenas tardes": "good afternoon",
+    "buenas noches": "good night",
+    "adiós": "goodbye",
+    "gracias": "thank you",
+    "por": "for",
+    "favor": "please",
+    "cómo": "how",
+    "estás": "are you",
+    "qué": "what",
+    "tal": "up",
+    "me": "my",
+    "llamo": "name is",
+    "sí": "yes",
+    "no": "no",
+    "dónde": "where",
+    "está": "is",
+    "el": "the",
+    "baño": "bathroom",
+    "no entiendo": "I don't understand",
+    "puedes": "can you",
+    "ayudarme": "help me",
+    "cuánto": "how much",
+    "cuesta": "does it cost",
+    "estoy": "I am",
+    "perdido": "lost",
+    "hablas": "do you speak",
+    "inglés": "English",
+    "buen": "good",
+    "trabajo": "job",
+    "feliz": "happy",
+    "cumpleaños": "birthday",
+    "salud": "bless you",
+    "lo": "I",
+    "siento": "sorry",
+    "hora": "time",
+    "es": "is",
+    "repetir": "repeat",
+    "te": "I",
+    "quiero": "love you",
+    "viaje": "trip",
+    "provecho": "meal",
+    "puedo": "can",
+    "encontrar": "find",
+    "un": "a",
+    "taxi": "taxi",
+    "bien": "fine",
+    "pasa": "up",
+    "navidad": "christmas",
+    "año": "year",
+    "nuevo": "new",
+    "cómo te llamas": "what is your name",
+    "hasta": "until",
+    "luego": "later",
+    "pronto": "soon",
+    "bienvenido": "welcome",
+    "hablar": "speak",
+    "más": "more",
+    "despacio": "slowly",
+    "hablo": "I speak",
+    "muy": "very",
+    "bien": "well",
+    "estación": "station",
+    "cansado": "tired",
+    "mostrarme": "show me",
+    "día": "day",
+    "extraño": "miss you"
+  };
 
-  const data = await response.json();
-  return data.translatedText || "[Sin traducción]";
+  // Normaliza el texto
+  const key = text.toLowerCase().trim();
+
+  // Si frase completa está en diccionario, devuelve
+  if (dictionary[key]) {
+    return dictionary[key];
+  }
+
+  // Si no, intenta traducir palabra por palabra
+  const words = key.split(/\s+/);
+  const translatedWords = words.map(word => dictionary[word] || word);
+  const translatedText = translatedWords.join(" ");
+
+  return translatedText;
 }
